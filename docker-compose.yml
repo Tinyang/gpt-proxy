@@ -1,0 +1,22 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    environment:
+      - REDIS_PASSWORD
+    volumes:
+      - /redis-data:/data
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+
+  gpt-web:
+    image: yidadaa/chatgpt-next-web:latest
+    environment:
+      - OPENAI_API_KEY=OPENAI_API_KEY
+      - CODE=PASSWORD
+
+  gpt-proxy:
+    image: tinyangogogo/gpt-proxy:latest
+    environment:
+      - REDIS_PASSWORD
+    ports:
+      - "3001:3001"
